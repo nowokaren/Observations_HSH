@@ -276,9 +276,9 @@ if(chip=='JS-Tek'){
   yst1=yse1-ytr1+1
   yst2=yse2-ytr1+1
 
-# TRIMSEC (secci�n �til)
+# TRIMSEC (sección útil) - Como sabe/elige la seccion util?
   sx1="["//str(xtr1)//":"//str(xtr2)//","//str(ytr1)//":"//str(ytr2)//"]"
-# STATSEC (caja estad�sticas imagen recortada)
+# STATSEC (caja estadísticas imagen recortada)
   sx3="["//str(xst1)//":"//str(xst2)//","//str(yst1)//":"//str(yst2)//"]"
 # SECTION (caja estad�sticas imagen sin recortar)
   sx4="["//str(xse1)//":"//str(xse2)//","//str(yse1)//":"//str(yse2)//"]"
@@ -367,9 +367,10 @@ if(cpc){
 ccdproc.flat=tipoflat//"*.fits"
 flatcombine.output = tipoflat
 
-print("Calcula ganancia (EPADU) y ruido de lectura (RDNOISE)")
+
 # Calcula ganancia (EPADU) y ruido de lectura (RDNOISE)
 if(gr){
+  print("Calcula ganancia (EPADU) y ruido de lectura (RDNOISE)")
   findgain.section=sx4
 	
   list=lifla
