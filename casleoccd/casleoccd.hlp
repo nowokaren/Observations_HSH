@@ -1,0 +1,236 @@
+.help casleoccd Ene2021 lpiraf
+.ih
+NOMBRE
+casleoccd -- Tarea para reducir imágenes CCD del CASLEO (Roper-2048, Tek-1024, y STL-1001E)
+.ih
+USO
+casleoccd instrumento binning
+.ih
+PARÁMETROS
+.ls instrumento = 'JS-Roper'
+Cámara CCD usada
+.le
+.ls binning = 1
+Factor de binning (X,Y)
+.le
+.ls redfoc = yes
+¿Se usó reductor focal? (solo JS-Roper)
+.le
+.ls ganron = yes
+¿Calcula ganancia y ruido de lectura?
+.le
+.ls sethead = yes
+¿Agrega keywords/actualiza headers (EPADU y RDNOISE)?
+.le
+.ls masterbias = no
+¿Genera master BIAS? (Zero.fits)
+.le
+.ls masterflat = no
+¿Genera master FLAT? (FlatX.fits)
+.le
+.ls masterdark = no
+¿Genera master DARK? (Dark.fits)
+.le
+.ls borracal = no
+¿Borra calibraciones originales?
+.le
+.ls procesa = no
+¿Procesa todas las imágenes?
+.le
+.ls ovscinter = yes
+¿Ajusta overscan en forma interactiva? (solo JS Roper y Tek)
+.le
+.ls oscuridad = no
+¿Corrige por dark? (solo HSH-STL)
+.le
+.ls cosmicos = no
+¿Corrige por rayos cósmicos? (lacos-im)
+.le
+.ls epadu = 1.
+Valor de ganancia calculado (e-/adu).
+Este es un parámetro de salida.
+.le
+.ls rdnoise = 0.
+Valor de ruido de lectura calculado (e-).
+Este es un parámetro de salida.
+.le
+.ls listbias = ""
+Lista de imágenes de bias
+.le
+.ls listflat = ""
+Lista de imágenes de flat-field
+.le
+.ls listdark = ""
+Lista de imágenes de dark (solo HSH)
+.le
+.ls listima = ""
+Lista de imágenes a editar / reducir
+.le
+.ls flatcielo = no
+¿Flats de cielo? (no => dome-flats)
+.le
+.ls flatHWP = no
+¿Flats por cada ángulo HWP?
+.le
+.ls rfilJS = 2
+¿Rueda de filtros TJS (2=UBVRI|1=SDSS)?'
+.le
+.ls rfilHSH = 'int'
+¿Rueda de filtros HSH (int=BVRI|ext=UHaND)?
+.le
+.ls base = '/home/mi-iraf/Observatorios/casleo/'
+directorio con datos de los CCDs
+.le
+.ls xcent = 988
+coordenada X del centro RF (pix)
+.le
+.ls ycent = 1072
+coordenada Y del centro RF (pix)
+.ih
+DESCRIPCIÓN
+
+Setea parámetros para procesar con CCDPROC imágenes tomadas con los CCDs del
+CASLEO: Roper Versarray 2048B (imagen directa JS), Tek-1024 (CasPol JS), y
+STL-1001E (imagen directa HSH). Opcionalmente, genera el master-bias (Zero),
+el master-dark (Dark) y los master-flats (FlatX, donde "X" es cada filtro, o
+una combinación de filtro y HWPLATE para CasPol) y procesa las imágenes de
+ciencia. También setea parámetros para posterior fotometría con APPHOT.
+
+Según el \fIinstrumento\fR establece parámetros de cada CCD (escala, tamaño, etc.).
+
+Según el factor de \fIbinning\fR, y, en el caso del JS-Roper, si se usa o no
+Reductor Focal (\fIredfoc\fR), calcula las secciones \fIbiassec\fR
+(overscan) y \fItrimsec\fR (zona útil) para CCDPROC, y la caja de
+estadísticas para el FLATCOMBINE. La opción \fIredfoc\fR = yes sólo vale
+para el CCD Roper-2048 del JS (directo). En este caso recorta la imagen
+descartando los pixeles por fuera de un cuadrado circunscripto al campo
+circular útil. Para imágenes de años anteriores puede ser necesario cambiar
+las coordenada del centro del campo circular útil (\fIxcent\fR, \fIycent\fR;
+medidos en píxeles binneados) con respecto a los valores por defecto.
+
+Si \fIganron\fR = yes, calcula ganancia y ruido de lectura usando los flats
+listados en \fIlistflat\fR y los bias listados en \fIlistbias\fR.
+
+Si \fIsethead\fR = yes, agrega o actualiza los encabezamientos de las
+imágenes listadas en \fIlistima\fR con los valores de ganancia (EPADU) y
+ruido de lectura (RDNOISE) calculados.
+
+En el directorio \fIbase\fR (a definir por el/la usuario/a) tienen que estar
+ los archivos 'ccdroper_r1.dat', 'ccdroper_r2.dat', 'ccdtek.dat',
+ 'ccdtek-HWP.dat', 'ccdsbig_hsh_rint.dat', y 'ccdsbig_hsh_rext.dat' (CCD
+ instrument files), y 'subsets_roper_r1',
+ 'subsets_roper_r2','subsets_caspol', 'subsets_caspol-HWP',
+ 'subsets_sbig-hsh_rint', y 'subsets_sbig-hsh_rext' (subset translation
+ file) para cada instrumento. La tarea seleccionará los archivos que
+ correspondan según el \fIinstrumento\fR y según la rueda de filtros
+ utilizada (\fIrfilJS\fR = '1' o \fIrfilJS\fR = '2' para Roper-2048;
+ \fIrfilHSH\fR = 'int' o \fIrfilHSH\fR = 'ext' para STL-1001E), o
+ según se haya optado por agrupar flats por posición de la HWP o promediar
+ todos (\fIflatHWP\fR = yes \fIflatHWP\fR = no, respectivamente, para
+ Tek-1024).
+
+Si \fImasterbias\fR = yes, genera el master-bias (Zero) combinando con
+ZEROCOMBINE los bias de \fIlistbias\fR, y si \fImasterflat\fR = yes, genera
+los master-flats (uno por filtro: FlatB, FlatV, etc.) combinando con
+FLATCOMBINE los flats de \fIlistflat\fR.  Si el filtro de la rueda principal
+(para Roper-2048 y STL-1001E) está en 'Free', usa el de la rueda
+secundaria. Agrega una keyword 'UFILTER' en los flats e imágenes de ciencia
+para usarla como subsets.  Si \fIflatcielo\fR = yes setea los parámetros del
+FLATCOMBINE para flats de cielo (y los masterflats se llaman 'SkyB', 'SkyV',
+etc. Si \fIflatHWP\fR (opción válida solo para \fIinstrumento\fR = "JS-Tek",
+es decir, CasPol) genera un masterflat por cada filtro y cada posición de la
+lámina de media onda (HWPLATE). Los nombres de los masterflats (caso cúpula)
+serán entonces: FlatBa, FlatBb, FlatBc, FlatBd, etc., donde 'a', 'b', 'c',
+'d' corresponden a HWPLATE 0.0, 22.5, 45.0, y 67.5 grados de la HWP,
+respectivamente.
+
+Si \fImasterdark\fR = yes, genera el master-dark a partir de los darks
+individuales en \fIlistdark\fR. Para los CCDs del JS (JS-Roper y JS-Tek)
+siempre es \fImasterdark\fR = no.
+
+Opcionalmente (si \fIborracal\fR = yes) se borran los bias, flats y darks
+individuales.
+
+Muy importante: para flats tomados con JS-Roper + reductor focal, la
+variable CCDMEAN que calcula el FLATCOMBINE (y que va al header de cada
+master-flat) va a estar afectada por los píxeles fuera del campo circular
+útil. Dado que al momento de hacer la corrección por flat-field el
+master-flat se divide por el valor de CCDMEAN, si ese valor no corresponde a
+la media del campo circular útil se estará introduciendo un error. La tarea
+CASLEOCCD recalcula y corrige el valor de CCDMEAN, usando un cuadrado
+inscripto dentro del campo circular útil; de esta forma el flat normalizado
+toma valores cercanos a 1.0 dentro del área útil circular.  El mismo
+procedimiento se aplica para el JS-Tek, considerando el campo circula
+vigneteado por la óptica del CasPol.
+
+Con \fIprocesa\fR = yes corre el CCDPROC a todas las imágenes listadas en
+\fIlistima\fR. Es responsabilidad del usuario que existan el master-bias
+('Zero.fits') y los master-flats ('FlatX.fits'), generados ya sea en la
+misma corrida del CASLEOCCD, en una corrida anterior, o generados de algún
+otro modo. Si \fIoscuridad\fR = yes también corrige por dark (sólo HSH);
+similarmente, debe existir una imagen master-dark ('Dark.fits') generada por
+CASLEOCCD o de otra forma.
+
+Para el JS, en todos los casos (incluyendo bias y flats) el primer paso de
+procesamiento es el ajuste y resta de overscan; la variable \fIovscinter\fR
+controla si esto se hace en forma interactiva o automática. Si se usa
+binning mayor o igual a 3x3, no se aplica overscan. Para el HSH nunca se
+aplica overscan.
+
+Finalmente, si \fIcosmicos\fR = yes corrige por rayos cósmicos utilizando la
+tarea \fIlacos-im\fR, que debe estar instalada (ver: van Dokkum 2001, PASP,
+113, 1420 - http://www.astro.yale.edu/dokkum/lacosmic/).
+
+La tarea CASLEOCCD se puede correr para generar el master-bias y los
+master-flats (y eventualmente el master-dark) y reducir los datos, todo de
+una vez, o bien se puede correr por pasos, para ir controlando los
+resultados (ver ejemplos). En este último caso hay que setear con cuidado
+los distintos parámetros de la tarea.
+
+
+.ih
+EJEMPLOS
+1. Setear parámetros de procesamiento para Roper c/RF, binning 2x2, y calcular ganancia y RON a fin de verificar los valores:
+
+.nf
+   cl> casleoccd JS-Roper 2 redfoc+ ganron+ sethead- masterbias- masterflat- procesa- listbias=bias*.fit listflat=df*.fit
+
+
+2. A partir del resultado anterior, generar master-bias y flats (rueda de filtros SDSS), para controlar el resultado (borrando calibraciones individuales):
+
+   cl> casleoccd JS-Roper 2 redfoc+ ganron- sethead+ masterbi+ masterfl+ procesa- borracal+ listbias=bias*.fit listflat=df*.fit rfilJS=1
+
+
+3. Procesar las imágenes de ciencia por bias y flats, y corregir por rayos cósmicos:
+
+   cl> casleoccd JS-Roper 2 redfoc+ ganron- sethead- masterbi- masterfl- procesa+ cosmic+ listima=3C279*.fit
+
+
+4. Hacer todo el procesamiento de una, sin verificar los ajustes de overscan:
+
+   cl> casleoccd JS-Roper 2 redfoc+ ganron+ sethead+ masterbi+ masterfl+ procesa+ cosmic+ borracal+ ovscinter- listbias=bias*.fit listflat=df*.fit listima=NGC5044*.fit
+
+5. Hacer todo el procesamiento para imágenes del HSH-STL:
+
+   cl> casleoccd HSH-STL 1 ganron+ sethead+ masterbi+ masterfl+ masterda+ oscuri+ procesa+  cosmic+ borracal+ listbias=bias*.fit listdark= dark*.fit listflat=df*.fit listima=3C279*.fit
+      
+.fi
+.ih
+BICHOS
+
+Supone que el binning es el mismo en X e Y. Actualmente, para Roper-2048 y Tek-1024 solo fue testeada con binning 1x1, 2x2, y 3x3.
+
+La opción de borrar calibraciones originales (\fIborracal\fR+) solo tiene efecto si el cáculo del correspondiente "master" (masterbias, masterflat, masterdark) está habilitado.
+
+El cálculo de ganancia y ruido de lectura puede demorar varios minutos si hay muchos (>50) flats. Puede convenir separarlos por filtro.
+
+Es responsabilidad del usuario que existan las imágenes necesarias y los archivos de calibración.
+
+Es responsabilidad del usuario que los archivos de configuración (CCD instrument file, Subset translation file) tengan información correcta y estén en el lugar correspondiente.
+
+Si en la carpeta de trabajo hay archivos cuyos nombres empiezan con "Flat" la tarea interpretará que son masterfalts, y dará error.
+.fi
+.ih
+VER ADEMÁS
+redfoc
+.endhelp

@@ -1,0 +1,156 @@
+dir
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+conda env list
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
+conda env list
+conda create -n iraf python=2.7
+conda install jupyter notebook
+sudo apt install iraf xgterm
+sudo apt install python3-pyraf
+cl
+dir
+iraf
+which xgterm
+cd ..
+dir
+cd ..
+dir
+cd bin
+dir
+which iraf
+cd ..
+dir
+cd home
+dir
+cd knowogrodski/
+dir
+sudo apt remove iraf xgterm
+sudo apt remove python3-pyraf
+sudo apt autoremove
+dir
+cl
+iraf
+conda activate iraf27
+cl
+mkiraf
+cl
+xgterm
+conda deactivate
+cl
+iraf
+sudo apt install iraf
+cl
+ecl
+sudo a`t install cl-launch
+lo
+:lo
+exit
+sudo apt install cl-launch
+cl
+sudo apt uninstall cl-launch
+sudo apt remove cl-launch
+iraf
+cl
+mkiraf
+conda activate iraf27
+mkiraf
+cl
+exit
+cd ..
+cd knowogrodski/
+dir
+cd ..
+dir
+cd Documentos/
+dir
+cd Obs_HSH/
+dir
+unzip ITFiles.zip 
+unzip subsets.zip 
+unzip casleoccd-20240418T194036Z-001.zip 
+dir
+rm *.zip
+dir
+conda env list
+conda env remove -n iraf
+conda env list
+lsb_release -a
+conda create -n iraf python=2.7
+conda activate iraf
+sudo apt install iraf xgterm
+dir
+mkdir iraf
+cd iraf
+mkiraf
+cd ..
+sudo apt install astro-iraf
+dir
+cd iraf
+mkiraf
+iraf
+cl
+cd ..
+conda deactivate
+conda create -n iraf27 python=2.7 iraf-all pyraf-all stsci
+conda config --add channels http://ssb.stsci.edu/astroconda
+conda create -n astroconda stsci
+conda create -n iraf27 python=2.7 iraf-all pyraf-all stsci
+source activate iraf27
+dir
+cd iraf
+mkiraf
+cd ../Documentos/Obs_HSH/casleoccd/
+dir
+cl
+xgterm -sb&
+xgterm
+cd ..
+xgterm
+ds9&
+cl
+cd ..
+cl
+conda deactivate
+conda activate iraf
+cl
+dir
+cd knowogrodski/
+dir
+cd iraf/
+mkiraf
+cl
+conda deactivate
+conda activate iraf27
+cl
+iraf
+xgterm
+mkiraf
+cl
+mkiraf
+cl
+conda env remove -n irf
+conda env remove -n iraf
+conda deactivate
+conda env remove -n iraf27
+conda env lsit
+conda env list
+conda create -n iraf27 python=2.7 iraf-all pyraf-all stsci
+conda activate iraf27
+cd ..
+cd Documentos/
+dir
+cd Obs_HSH/
+mkiraf
+cl
+xgterm
+conda install xgterm
+sudo apt install xgterm
+xgterm
+conda deactivate
+xgterm
+sudo apt remove iraf
+conda env remove -n iraf27
