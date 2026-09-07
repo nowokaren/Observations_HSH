@@ -10,3 +10,18 @@
 /stsdas.linux
 /stsdas.linux.tar.gz
 /uparm
+
+# MOP credentials and local downloads
+.env
+.env.*
+!.env.example
+targets_selection*.txt
+targets_selection*.csv
+fov*.png
+build/
+*.egg-info/
+__pycache__/
+.venv/
+
+# Large local notebook
+Image_processing.ipynb
