@@ -25,3 +25,15 @@ __pycache__/
 
 # Large local notebook
 Image_processing.ipynb
+
+# Large/local data
+imagenes/
+IRAF/
+hsh_reduction/
+
+# Nested repositories
+mop_api/
+ulens_hsh/
+
+# External/moved data
+test_download_target_from_CHE
